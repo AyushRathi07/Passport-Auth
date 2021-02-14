@@ -1,0 +1,28 @@
+<%- include('partials/header') %>
+<div class="container">
+  <h2 class="text-center mt-4">Blogs</h2> <br/>
+  <% if(locals.blogs && locals.blogs.length) { %>
+    <% locals.blogs.forEach((blog) => { %>
+      <div class="card excss">
+        <div class="card-body">
+          <div class="card-title"><strong><%= blog.title %></strong></div>
+          <p><%= blog.content %></p>
+          <hr/>
+          <% if(locals.currentUser){ %>
+            <% if(currentUser.role === 'member' || currentUser.role === 'admin'){ %>
+            <p><strong>Author:</strong><i> <%= blog.author.username %></i> &nbsp; <strong>Posted on:</strong><i> <%= blog.createdAt.toDateString() %></i></p>
+            <% } %>
+            <% if(currentUser.role === 'admin') { %>
+            <form class="form-inline" action="/blogs/<%= blog._id %>/delete" method="POST">
+              <button type="submit" class="btn btn-danger">Delete Blog</button>
+            </form>
+            <% } %>
+          <% } %>
+        </div>
+      </div>
+    <% }) %>
+  <% } else {%>
+    <h4 class="text-center"> NO BLOGS </h4>
+  <% } %>
+</div>
+<%- include('partials/footer') %>
